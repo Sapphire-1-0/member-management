@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: member-management
+  data:
+    mongodb:
+      username: admin
+      password: cognizant
+      host: localhost
+      port: 27019
+      database: member
+      authentication-database: admin
+  cloud:
+    config:
+      enabled: false
+  profiles:
+    active: unit-test
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false

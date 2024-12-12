@@ -1,0 +1,27 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /api/v1/sapphire/member/welcome:
+    get:
+      tags:
+      - welcome-api-impl
+      operationId: getWelcomeMessage
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/WelcomeDto"
+components:
+  schemas:
+    WelcomeDto:
+      type: object
+      properties:
+        welcomeMessage:
+          type: string
