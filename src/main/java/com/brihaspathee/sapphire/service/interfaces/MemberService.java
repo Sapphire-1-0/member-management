@@ -1,8 +1,10 @@
 package com.brihaspathee.sapphire.service.interfaces;
 
 import com.brihaspathee.sapphire.domain.elastic.documents.Member;
+import com.brihaspathee.sapphire.model.MemberSearchParamDto;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created in Intellij IDEA
@@ -53,6 +55,13 @@ public interface MemberService {
     Member findById(Long memberId);
 
     /**
+     * Find the member by id using elastic search client
+     * @param memberId - member id of them member that needs to be searched
+     * @return - return the member
+     */
+    Member findMemberById(Long memberId);
+
+    /**
      * Delete the member from elastic
      * @param memberId - id of the member to be deleted
      */
@@ -62,4 +71,11 @@ public interface MemberService {
      * Delete all the members from elastic
      */
     void deleteAll();
+
+    /**
+     * Search for members based on search parameters
+     * @param searchParamDto - The search parameters passed
+     * @return - return the matched members
+     */
+    List<Member> memberSearch(MemberSearchParamDto searchParamDto) throws IOException;
 }

@@ -3,3 +3,13 @@ spring:
     name: member-management
   config:
     import: optional:configserver:http://localhost:7090
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          elasticsearch:
+            core: DEBUG
+            core.query: DEBUG
+      elasticsearch:
+        client: DEBUG

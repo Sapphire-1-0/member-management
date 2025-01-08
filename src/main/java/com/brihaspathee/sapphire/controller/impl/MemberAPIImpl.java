@@ -2,6 +2,8 @@ package com.brihaspathee.sapphire.controller.impl;
 
 import com.brihaspathee.sapphire.controller.interfaces.MemberAPI;
 import com.brihaspathee.sapphire.domain.elastic.documents.Member;
+import com.brihaspathee.sapphire.model.MemberList;
+import com.brihaspathee.sapphire.model.MemberSearchParamDto;
 import com.brihaspathee.sapphire.service.interfaces.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created in Intellij IDEA
@@ -75,6 +78,16 @@ public class MemberAPIImpl implements MemberAPI {
     }
 
     /**
+     * Find the member by memberId using elastic search client
+     * @param memberId - Id of the member to be found
+     * @return - return the member found
+     */
+    @Override
+    public ResponseEntity<Member> findMemberByIdUsingElasticSearchClient(Long memberId) {
+        return ResponseEntity.ok(memberService.findMemberById(memberId));
+    }
+
+    /**
      * Delete the member from elastic
      * @param memberId - Id of the member to be deleted
      * @return - return void
@@ -83,6 +96,18 @@ public class MemberAPIImpl implements MemberAPI {
     public ResponseEntity<Void> deleteMemberById(Long memberId) {
         memberService.deleteById(memberId);
         return null;
+    }
+
+    /**
+     * Search for members using the search parameters
+     * @param searchParam - Search parameters for matching members
+     * @return - Matched member list
+     */
+    @Override
+    public ResponseEntity<MemberList> searchMembers(MemberSearchParamDto searchParam) throws IOException {
+        List<Member> members = memberService.memberSearch(searchParam);
+        MemberList memberList = MemberList.builder().members(members).build();
+        return new ResponseEntity<>(memberList, HttpStatus.OK);
     }
 
     /**

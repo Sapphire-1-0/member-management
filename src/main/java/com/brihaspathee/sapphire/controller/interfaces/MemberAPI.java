@@ -1,6 +1,8 @@
 package com.brihaspathee.sapphire.controller.interfaces;
 
 import com.brihaspathee.sapphire.domain.elastic.documents.Member;
+import com.brihaspathee.sapphire.model.MemberList;
+import com.brihaspathee.sapphire.model.MemberSearchParamDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -55,12 +57,28 @@ public interface MemberAPI {
     ResponseEntity<Member> findMemberById(@PathVariable("memberId") @Valid Long memberId);
 
     /**
+     * Find the member by memberId using elastic search client
+     * @param memberId - Id of the member to be found
+     * @return - return the member found
+     */
+    @GetMapping("/elastic-search-client/{memberId}")
+    ResponseEntity<Member> findMemberByIdUsingElasticSearchClient(@PathVariable("memberId") @Valid Long memberId);
+
+    /**
      * Delete the member from elastic
      * @param memberId - Id of the member to be deleted
      * @return - return void
      */
     @DeleteMapping("/{memberId}")
     ResponseEntity<Void> deleteMemberById(@PathVariable("memberId") @Valid Long memberId);
+
+    /**
+     * Search for members using the search parameters
+     * @param searchParam - Search parameters for matching members
+     * @return - Matched member list
+     */
+    @PostMapping("/search")
+    ResponseEntity<MemberList> searchMembers(@Valid @RequestBody MemberSearchParamDto searchParam) throws IOException;
 
     /**
      * Delete all the members from elastic

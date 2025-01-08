@@ -29,15 +29,6 @@ public class ElasticSearchConfig {
     @Bean
     public ElasticsearchClient elasticsearchClient() {
         // Set up credentials
-//        BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-//        credentialsProvider.setCredentials(AuthScope.ANY,
-//                new UsernamePasswordCredentials("elastic", "your-password"));
-
-//        // Create the RestClient
-//        RestClientBuilder restClientBuilder = RestClient.builder("https://localhost:9200")
-//                .setHttpClientConfigCallback(httpClientBuilder ->
-//                        httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider)
-//                );
 
         // Create the RestClient
         RestClientBuilder restClientBuilder = RestClient.builder(new HttpHost("localhost", 9200, "http"));
