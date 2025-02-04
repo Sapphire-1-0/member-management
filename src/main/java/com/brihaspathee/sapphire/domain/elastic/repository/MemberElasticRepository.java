@@ -12,5 +12,5 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
  * Package Name: com.brihaspathee.sapphire.domain.elastic.repository
  * To change this template use File | Settings | File and Code Template
  */
-public interface MemberRepository extends ElasticsearchRepository<Member, Long> {
+public interface MemberElasticRepository extends ElasticsearchRepository<Member, Long> {
 }

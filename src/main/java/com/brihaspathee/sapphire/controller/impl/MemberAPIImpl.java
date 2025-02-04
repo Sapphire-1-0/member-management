@@ -4,7 +4,7 @@ import com.brihaspathee.sapphire.controller.interfaces.MemberAPI;
 import com.brihaspathee.sapphire.domain.elastic.documents.Member;
 import com.brihaspathee.sapphire.model.MemberList;
 import com.brihaspathee.sapphire.model.MemberSearchParamDto;
-import com.brihaspathee.sapphire.service.interfaces.MemberService;
+import com.brihaspathee.sapphire.service.interfaces.MemberElasticService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -31,7 +31,7 @@ public class MemberAPIImpl implements MemberAPI {
     /**
      * Instance of the member service
      */
-    private final MemberService memberService;
+    private final MemberElasticService memberElasticService;
 
     /**
      * Add the member to elastic search
@@ -40,7 +40,7 @@ public class MemberAPIImpl implements MemberAPI {
      */
     @Override
     public ResponseEntity<Long> addMember(Member member) {
-        return new ResponseEntity<>(memberService.save(member).getMemberId(),
+        return new ResponseEntity<>(memberElasticService.save(member).getMemberId(),
                 HttpStatus.CREATED);
     }
 
@@ -51,7 +51,7 @@ public class MemberAPIImpl implements MemberAPI {
      */
     @Override
     public ResponseEntity<Long> addMemberUsingClient(Member member) throws IOException {
-        return new ResponseEntity<>(memberService.saveUsingClient(member).getMemberId(),
+        return new ResponseEntity<>(memberElasticService.saveUsingClient(member).getMemberId(),
                 HttpStatus.CREATED);
     }
 
@@ -63,7 +63,7 @@ public class MemberAPIImpl implements MemberAPI {
      */
     @Override
     public ResponseEntity<Void> updateMemberUsingClient(Member member) throws IOException {
-        memberService.updateUsingClient(member.getMemberId(), member.getFirstName());
+        memberElasticService.updateUsingClient(member.getMemberId(), member.getFirstName());
         return ResponseEntity.noContent().build();
     }
 
@@ -74,7 +74,7 @@ public class MemberAPIImpl implements MemberAPI {
      */
     @Override
     public ResponseEntity<Member> findMemberById(Long memberId) {
-        return ResponseEntity.ok(memberService.findById(memberId));
+        return ResponseEntity.ok(memberElasticService.findById(memberId));
     }
 
     /**
@@ -84,7 +84,7 @@ public class MemberAPIImpl implements MemberAPI {
      */
     @Override
     public ResponseEntity<Member> findMemberByIdUsingElasticSearchClient(Long memberId) {
-        return ResponseEntity.ok(memberService.findMemberById(memberId));
+        return ResponseEntity.ok(memberElasticService.findMemberById(memberId));
     }
 
     /**
@@ -94,7 +94,7 @@ public class MemberAPIImpl implements MemberAPI {
      */
     @Override
     public ResponseEntity<Void> deleteMemberById(Long memberId) {
-        memberService.deleteById(memberId);
+        memberElasticService.deleteById(memberId);
         return null;
     }
 
@@ -105,7 +105,7 @@ public class MemberAPIImpl implements MemberAPI {
      */
     @Override
     public ResponseEntity<MemberList> searchMembers(MemberSearchParamDto searchParam) throws IOException {
-        List<Member> members = memberService.memberSearch(searchParam);
+        List<Member> members = memberElasticService.memberSearch(searchParam);
         MemberList memberList = MemberList.builder().members(members).build();
         return new ResponseEntity<>(memberList, HttpStatus.OK);
     }
@@ -116,7 +116,7 @@ public class MemberAPIImpl implements MemberAPI {
      */
     @Override
     public ResponseEntity<Void> deleteAll() {
-        memberService.deleteAll();
+        memberElasticService.deleteAll();
         return null;
     }
 }

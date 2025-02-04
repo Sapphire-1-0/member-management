@@ -1,16 +1,15 @@
 package com.brihaspathee.sapphire.service.interfaces;
 
-import com.brihaspathee.sapphire.domain.elastic.documents.Member;
-import com.brihaspathee.sapphire.model.MemberSearchParamDto;
+import com.brihaspathee.sapphire.domain.document.Member;
+import com.brihaspathee.sapphire.model.MemberDto;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
  * Created in Intellij IDEA
  * User: Balaji Varadharajan
- * Date: 12, December 2024
- * Time: 6:23 AM
+ * Date: 01, February 2025
+ * Time: 6:55 PM
  * Project: sapphire
  * Package Name: com.brihaspathee.sapphire.service.interfaces
  * To change this template use File | Settings | File and Code Template
@@ -18,64 +17,18 @@ import java.util.List;
 public interface MemberService {
 
     /**
-     * Save the member to elastic
-     * @param member - member to be saved
-     * @return - return the saved member
+     * Saves a list of MemberDto objects into the system.
+     *
+     * @param memberDtos the list of MemberDto objects to be saved
+     * @return the list of MemberDto objects after they have been saved
      */
-    Member save(Member member);
+    List<MemberDto> saveMemberDtos(List<MemberDto> memberDtos);
 
     /**
-     * Save the member to elastic using elastic search client
-     * @param member - member to be saved
-     * @return - member that was saved to the index
-     * @throws IOException - Exception is generated
+     * Saves a list of members into the system.
+     *
+     * @param memberDtos the list of MemberDto objects to be saved
+     * @return the list of Member objects after they have been saved
      */
-    Member saveUsingClient(Member member) throws IOException;
-
-    /**
-     * Update the member information in elastic search using the repository
-     * @param member - the member who needs to be updated
-     * @throws IOException - IOException is thrown
-     */
-    void update(Member member) throws IOException;
-
-    /**
-     * Update the member information in elastic search using the elastic search client
-     * @param memberId - Id of the member that needs to be updated
-     * @param firstName - the first name of the member is to be updated
-     * @throws IOException - IOException is thrown
-     */
-    void updateUsingClient(Long memberId, String firstName) throws IOException;
-
-    /**
-     * Find member by member id
-     * @param memberId - the memberID of the member to be searched
-     * @return - return the member found
-     */
-    Member findById(Long memberId);
-
-    /**
-     * Find the member by id using elastic search client
-     * @param memberId - member id of them member that needs to be searched
-     * @return - return the member
-     */
-    Member findMemberById(Long memberId);
-
-    /**
-     * Delete the member from elastic
-     * @param memberId - id of the member to be deleted
-     */
-    void deleteById(Long memberId);
-
-    /**
-     * Delete all the members from elastic
-     */
-    void deleteAll();
-
-    /**
-     * Search for members based on search parameters
-     * @param searchParamDto - The search parameters passed
-     * @return - return the matched members
-     */
-    List<Member> memberSearch(MemberSearchParamDto searchParamDto) throws IOException;
+    List<Member> saveMembers(List<MemberDto> memberDtos);
 }
