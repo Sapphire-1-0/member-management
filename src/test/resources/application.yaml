@@ -1,14 +1,17 @@
+application:
+  config:
+    premium-billing-url: http://localhost:7092/api/v1/sapphire/premium-billing
 spring:
   application:
     name: member-management
   data:
     mongodb:
-      username: admin
-      password: cognizant
+      username: membermanagementadmin
+      password: password
       host: localhost
       port: 27019
-      database: member
-      authentication-database: admin
+      database: member-management
+      authentication-database: member-management
   cloud:
     config:
       enabled: false

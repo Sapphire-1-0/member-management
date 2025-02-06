@@ -52,6 +52,15 @@ public class PremiumSpanDto {
     private LocalDate endDate;
 
     /**
+     * Represents the variant of the CSR (Cost-Sharing Reduction) plan associated
+     * with a premium span in an insurance or healthcare context.
+     * This field is used to specify the variation or level of CSR applied to a
+     * particular policy or coverage plan, typically determining the extent of
+     * out-of-pocket cost reductions for eligible beneficiaries.
+     */
+    private String csrVariant;
+
+    /**
      * Represents the total premium amount for a given premium span.
      * This field captures the aggregate sum of all premiums without considering
      * reductions or subsidies such as Advance Premium Tax Credit (APTC), Cost-Sharing

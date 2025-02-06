@@ -55,6 +55,14 @@ public class PremiumSpan {
     private LocalDate endDate;
 
     /**
+     * Represents the Cost Sharing Reduction (CSR) variant associated with a premium span.
+     * CSR variants are used to indicate the level of cost-sharing assistance
+     * provided in health insurance plans. This field typically contains
+     * a value that categorizes the specific CSR level applicable to the premium span.
+     */
+    private String csrVariant;
+
+    /**
      * Represents the total premium amount for a premium span.
      * This value captures the aggregate financial amount before any adjustments,
      * such as APTC (Advance Premium Tax Credit), CSR (Cost Sharing Reduction), or other subsidies.

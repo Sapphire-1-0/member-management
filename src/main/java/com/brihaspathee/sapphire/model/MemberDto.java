@@ -53,6 +53,11 @@ public class MemberDto {
     private LocalDate dateOfBirth;
 
     /**
+     *
+     */
+    private String gender;
+
+    /**
      * Represents a list of addresses associated with a member.
      * Each address in the list is described using the AddressDto class.
      * This field is used to capture multiple addresses linked to a specific

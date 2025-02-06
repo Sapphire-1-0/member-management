@@ -42,6 +42,15 @@ public class EnrollmentSpanDto {
     private String businessUnit;
 
     /**
+     * Represents the unique identifier associated with the subscriber
+     * in an exchange system during an enrollment span. This field is
+     * used to track or reference the subscriber's identification
+     * specific to the exchange for the purpose of managing enrollment
+     * data and functionalities.
+     */
+    private String exchangeSubscriberId;
+
+    /**
      * Represents the status of the enrollment span.
      * This field indicates the current lifecycle or processing state
      * of the enrollment span, such as active, inactive, or terminated.

@@ -75,6 +75,12 @@ public class Member {
     private LocalDate dateOfBirth;
 
     /**
+     *
+     */
+    @Field("gender")
+    private String gender;
+
+    /**
      * Represents the list of addresses associated with a member.
      * Each address in the list contains details such as address type, address lines,
      * city, state, zip code, and validity period. This allows maintaining
