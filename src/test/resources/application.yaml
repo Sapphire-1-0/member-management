@@ -1,4 +1,9 @@
 application:
+  user-info:
+    user-id: X-USER-ID
+    username: X-USER-NAME
+    service-id: X-SERVICE-ID
+    account-type: X-ACCOUNT-TYPE
   config:
     premium-billing-url: http://localhost:7092/api/v1/sapphire/premium-billing
 spring:
