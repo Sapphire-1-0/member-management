@@ -2,13 +2,11 @@ package com.brihaspathee.sapphire.controller.interfaces;
 
 import com.brihaspathee.sapphire.domain.document.Account;
 import com.brihaspathee.sapphire.model.AccountDto;
+import com.brihaspathee.sapphire.web.response.SapphireAPIResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created in Intellij IDEA
@@ -19,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Package Name: com.brihaspathee.sapphire.controller.interfaces
  * To change this template use File | Settings | File and Code Template
  */
-@RequestMapping("/api/v1/sapphire/account")
+@RequestMapping("/api/v1/sapphire/mms/secured/account")
 @Validated
 public interface AccountAPI {
 
@@ -31,4 +29,7 @@ public interface AccountAPI {
      */
     @PostMapping("/create")
     ResponseEntity<AccountDto> createAccount(@Valid @RequestBody AccountDto accountDto);
+
+    @GetMapping
+    ResponseEntity<SapphireAPIResponse<String>> getAllAccounts();
 }

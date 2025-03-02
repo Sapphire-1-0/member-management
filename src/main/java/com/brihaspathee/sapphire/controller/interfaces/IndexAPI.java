@@ -15,7 +15,7 @@ import java.io.IOException;
  * Package Name: com.brihaspathee.sapphire.controller.interfaces
  * To change this template use File | Settings | File and Code Template
  */
-@RequestMapping("/api/v1/sapphire/member")
+@RequestMapping("/api/v1/sapphire/mms/secured/member")
 @Validated
 public interface IndexAPI {
 
