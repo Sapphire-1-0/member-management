@@ -44,7 +44,7 @@ public class AccountAPIImpl implements AccountAPI {
     @Override
     public ResponseEntity<AccountDto> createAccount(AccountDto accountDto) {
 //        AccountDto savedAccount = accountService.saveAccount(accountDto);
-        log.info("Trying to create account - this log is from AccountAPIImpl");
+        log.info("Trying to create account");
         UserDto userDto = UserContext.getUser();
         if(userDto != null) {
             log.info("User name:{}", userDto.getUsername());

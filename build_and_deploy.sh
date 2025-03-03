@@ -3,6 +3,21 @@
 # Ensure scripts are executable
 chmod +x remove_snapshot.sh update_version.sh
 
+# Get current timestamp for log folder and filenames
+TIMESTAMP=$(date "+%Y%m%d_%H%M%S")
+LOG_DIR="build_logs/logs_${TIMESTAMP}"
+
+# Check if build_logs directory exists; if not, create it
+if [ ! -d "build_logs" ]; then
+  mkdir "build_logs"
+  echo "✅ Created build_logs directory."
+else
+  echo "✅ build_logs directory already exists."
+fi
+
+# Create the timestamped subfolder for logs
+mkdir -p "$LOG_DIR"
+
 # Step 1: Git Commit Before Deployment
 echo "🔹 Step 1: Staging changes before deployment..."
 git add .
@@ -37,7 +52,7 @@ echo "✅ -SNAPSHOT removed successfully."
 
 # Step 4: Build project
 echo "🔹 Step 4: Running mvn clean package..."
-mvn clean package
+mvn clean package > "$LOG_DIR/package_logs_${TIMESTAMP}.log" 2>&1
 
 if [ $? -ne 0 ]; then
     echo "❌ Maven package build failed. Exiting."
@@ -58,7 +73,7 @@ fi
 
 # Step 6: Run mvn clean verify
 echo "🔹 Step 6: Running mvn clean verify..."
-mvn clean verify
+mvn clean verify > "$LOG_DIR/verify_logs_${TIMESTAMP}.log" 2>&1
 
 if [ $? -ne 0 ]; then
     echo "❌ Maven verify failed. Exiting."
@@ -79,7 +94,7 @@ fi
 
 # Step 8: Deploy project
 echo "🔹 Step 8: Running mvn clean deploy..."
-mvn clean deploy
+mvn clean deploy > "$LOG_DIR/deploy_logs_${TIMESTAMP}.log" 2>&1
 
 if [ $? -ne 0 ]; then
     echo "❌ Maven deploy failed. Exiting."
