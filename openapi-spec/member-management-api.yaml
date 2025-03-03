@@ -6,7 +6,174 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 paths:
-  /api/v1/sapphire/member/welcome:
+  /api/v1/sapphire/mms/secured/member/elastic-search-client/update:
+    put:
+      tags:
+      - member-api-impl
+      operationId: updateMemberUsingClient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Member"
+        required: true
+      responses:
+        "200":
+          description: OK
+  /api/v1/sapphire/mms/secured/member:
+    post:
+      tags:
+      - member-api-impl
+      operationId: addMember
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Member"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int64
+    delete:
+      tags:
+      - member-api-impl
+      operationId: deleteAll
+      responses:
+        "200":
+          description: OK
+  /api/v1/sapphire/mms/secured/member/search:
+    post:
+      tags:
+      - member-api-impl
+      operationId: searchMembers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MemberSearchParamDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/MemberList"
+  /api/v1/sapphire/mms/secured/member/recreate:
+    post:
+      tags:
+      - index-api-impl
+      operationId: recreateAllIndexes
+      responses:
+        "200":
+          description: OK
+  /api/v1/sapphire/mms/secured/member/elastic-search-client:
+    post:
+      tags:
+      - member-api-impl
+      operationId: addMemberUsingClient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Member"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int64
+  /api/v1/sapphire/mms/secured/account/create:
+    post:
+      tags:
+      - account-api-impl
+      operationId: createAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AccountDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AccountDto"
+  /api/v1/sapphire/mms/secured/member/{memberId}:
+    get:
+      tags:
+      - member-api-impl
+      operationId: findMemberById
+      parameters:
+      - name: memberId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Member"
+    delete:
+      tags:
+      - member-api-impl
+      operationId: deleteMemberById
+      parameters:
+      - name: memberId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+  /api/v1/sapphire/mms/secured/member/elastic-search-client/{memberId}:
+    get:
+      tags:
+      - member-api-impl
+      operationId: findMemberByIdUsingElasticSearchClient
+      parameters:
+      - name: memberId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Member"
+  /api/v1/sapphire/mms/secured/account:
+    get:
+      tags:
+      - account-api-impl
+      operationId: getAllAccounts
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SapphireAPIResponseString"
+  /api/v1/sapphire/mms/public/welcome:
     get:
       tags:
       - welcome-api-impl
@@ -17,9 +184,375 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/WelcomeDto"
+                $ref: "#/components/schemas/SapphireAPIResponseWelcomeDto"
+  /api/v1/sapphire/mms/public/welcome/premium-billing:
+    get:
+      tags:
+      - welcome-api-impl
+      operationId: getPBWelcomeMessage
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SapphireAPIResponseWelcomeDto"
 components:
   schemas:
+    Member:
+      type: object
+      properties:
+        memberId:
+          type: integer
+          format: int64
+        firstName:
+          type: string
+        lastName:
+          type: string
+        birthDate:
+          type: string
+          format: date
+    MemberSearchParamDto:
+      type: object
+      properties:
+        searchMap:
+          type: object
+          additionalProperties:
+            type: string
+        sortField:
+          type: string
+        sortOrder:
+          type: string
+        dateOfBirthFrom:
+          type: string
+          format: date
+        dateOfBirthTo:
+          type: string
+          format: date
+        exactMatch:
+          type: boolean
+        formattedDateOfBirthFrom:
+          type: string
+        formattedDateOfBirthTo:
+          type: string
+    MemberList:
+      type: object
+      properties:
+        members:
+          type: array
+          items:
+            $ref: "#/components/schemas/Member"
+    AccountDto:
+      type: object
+      properties:
+        accountId:
+          type: string
+        accountNumber:
+          type: string
+        lineOfBusiness:
+          type: string
+        memberDtos:
+          type: array
+          items:
+            $ref: "#/components/schemas/MemberDto"
+        enrollmentSpanDtos:
+          type: array
+          items:
+            $ref: "#/components/schemas/EnrollmentSpanDto"
+    AddressDto:
+      type: object
+      properties:
+        addressCode:
+          type: string
+        addressType:
+          type: string
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zipCode:
+          type: string
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+    EnrollmentSpanDto:
+      type: object
+      properties:
+        enrollmentSpanId:
+          type: string
+        enrollmentSpanCode:
+          type: string
+        businessUnit:
+          type: string
+        exchangeSubscriberId:
+          type: string
+        spanStatus:
+          type: string
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        planId:
+          type: string
+        groupPolicyId:
+          type: string
+        effectuationDate:
+          type: string
+          format: date
+        paidThruDate:
+          type: string
+          format: date
+        premiumSpans:
+          type: array
+          items:
+            $ref: "#/components/schemas/PremiumSpanDto"
+    MemberDto:
+      type: object
+      properties:
+        memberId:
+          type: string
+        memberCode:
+          type: string
+        lastName:
+          type: string
+        firstName:
+          type: string
+        middleName:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        gender:
+          type: string
+        addressDtos:
+          type: array
+          items:
+            $ref: "#/components/schemas/AddressDto"
+    MemberPremiumDto:
+      type: object
+      properties:
+        memberCode:
+          type: string
+        premiumAmount:
+          type: number
+        exchangeMemberId:
+          type: string
+    PremiumSpanDto:
+      type: object
+      properties:
+        premiumSpanId:
+          type: string
+        premiumSpanCode:
+          type: string
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        csrVariant:
+          type: string
+        premiumAmountTotal:
+          type: number
+        totalResponsibleAmount:
+          type: number
+        aptcAmount:
+          type: number
+        csrAmount:
+          type: number
+        otherPayAmount:
+          type: number
+        memberPremiumDtos:
+          type: array
+          items:
+            $ref: "#/components/schemas/MemberPremiumDto"
+    SapphireAPIResponseString:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        statusCode:
+          type: integer
+          format: int32
+        status:
+          type: string
+          enum:
+          - 100 CONTINUE
+          - 101 SWITCHING_PROTOCOLS
+          - 102 PROCESSING
+          - 103 EARLY_HINTS
+          - 103 CHECKPOINT
+          - 200 OK
+          - 201 CREATED
+          - 202 ACCEPTED
+          - 203 NON_AUTHORITATIVE_INFORMATION
+          - 204 NO_CONTENT
+          - 205 RESET_CONTENT
+          - 206 PARTIAL_CONTENT
+          - 207 MULTI_STATUS
+          - 208 ALREADY_REPORTED
+          - 226 IM_USED
+          - 300 MULTIPLE_CHOICES
+          - 301 MOVED_PERMANENTLY
+          - 302 FOUND
+          - 302 MOVED_TEMPORARILY
+          - 303 SEE_OTHER
+          - 304 NOT_MODIFIED
+          - 305 USE_PROXY
+          - 307 TEMPORARY_REDIRECT
+          - 308 PERMANENT_REDIRECT
+          - 400 BAD_REQUEST
+          - 401 UNAUTHORIZED
+          - 402 PAYMENT_REQUIRED
+          - 403 FORBIDDEN
+          - 404 NOT_FOUND
+          - 405 METHOD_NOT_ALLOWED
+          - 406 NOT_ACCEPTABLE
+          - 407 PROXY_AUTHENTICATION_REQUIRED
+          - 408 REQUEST_TIMEOUT
+          - 409 CONFLICT
+          - 410 GONE
+          - 411 LENGTH_REQUIRED
+          - 412 PRECONDITION_FAILED
+          - 413 PAYLOAD_TOO_LARGE
+          - 413 REQUEST_ENTITY_TOO_LARGE
+          - 414 URI_TOO_LONG
+          - 414 REQUEST_URI_TOO_LONG
+          - 415 UNSUPPORTED_MEDIA_TYPE
+          - 416 REQUESTED_RANGE_NOT_SATISFIABLE
+          - 417 EXPECTATION_FAILED
+          - 418 I_AM_A_TEAPOT
+          - 419 INSUFFICIENT_SPACE_ON_RESOURCE
+          - 420 METHOD_FAILURE
+          - 421 DESTINATION_LOCKED
+          - 422 UNPROCESSABLE_ENTITY
+          - 423 LOCKED
+          - 424 FAILED_DEPENDENCY
+          - 425 TOO_EARLY
+          - 426 UPGRADE_REQUIRED
+          - 428 PRECONDITION_REQUIRED
+          - 429 TOO_MANY_REQUESTS
+          - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
+          - 451 UNAVAILABLE_FOR_LEGAL_REASONS
+          - 500 INTERNAL_SERVER_ERROR
+          - 501 NOT_IMPLEMENTED
+          - 502 BAD_GATEWAY
+          - 503 SERVICE_UNAVAILABLE
+          - 504 GATEWAY_TIMEOUT
+          - 505 HTTP_VERSION_NOT_SUPPORTED
+          - 506 VARIANT_ALSO_NEGOTIATES
+          - 507 INSUFFICIENT_STORAGE
+          - 508 LOOP_DETECTED
+          - 509 BANDWIDTH_LIMIT_EXCEEDED
+          - 510 NOT_EXTENDED
+          - 511 NETWORK_AUTHENTICATION_REQUIRED
+        reason:
+          type: string
+        message:
+          type: string
+        developerMessage:
+          type: string
+        response:
+          type: string
+    SapphireAPIResponseWelcomeDto:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        statusCode:
+          type: integer
+          format: int32
+        status:
+          type: string
+          enum:
+          - 100 CONTINUE
+          - 101 SWITCHING_PROTOCOLS
+          - 102 PROCESSING
+          - 103 EARLY_HINTS
+          - 103 CHECKPOINT
+          - 200 OK
+          - 201 CREATED
+          - 202 ACCEPTED
+          - 203 NON_AUTHORITATIVE_INFORMATION
+          - 204 NO_CONTENT
+          - 205 RESET_CONTENT
+          - 206 PARTIAL_CONTENT
+          - 207 MULTI_STATUS
+          - 208 ALREADY_REPORTED
+          - 226 IM_USED
+          - 300 MULTIPLE_CHOICES
+          - 301 MOVED_PERMANENTLY
+          - 302 FOUND
+          - 302 MOVED_TEMPORARILY
+          - 303 SEE_OTHER
+          - 304 NOT_MODIFIED
+          - 305 USE_PROXY
+          - 307 TEMPORARY_REDIRECT
+          - 308 PERMANENT_REDIRECT
+          - 400 BAD_REQUEST
+          - 401 UNAUTHORIZED
+          - 402 PAYMENT_REQUIRED
+          - 403 FORBIDDEN
+          - 404 NOT_FOUND
+          - 405 METHOD_NOT_ALLOWED
+          - 406 NOT_ACCEPTABLE
+          - 407 PROXY_AUTHENTICATION_REQUIRED
+          - 408 REQUEST_TIMEOUT
+          - 409 CONFLICT
+          - 410 GONE
+          - 411 LENGTH_REQUIRED
+          - 412 PRECONDITION_FAILED
+          - 413 PAYLOAD_TOO_LARGE
+          - 413 REQUEST_ENTITY_TOO_LARGE
+          - 414 URI_TOO_LONG
+          - 414 REQUEST_URI_TOO_LONG
+          - 415 UNSUPPORTED_MEDIA_TYPE
+          - 416 REQUESTED_RANGE_NOT_SATISFIABLE
+          - 417 EXPECTATION_FAILED
+          - 418 I_AM_A_TEAPOT
+          - 419 INSUFFICIENT_SPACE_ON_RESOURCE
+          - 420 METHOD_FAILURE
+          - 421 DESTINATION_LOCKED
+          - 422 UNPROCESSABLE_ENTITY
+          - 423 LOCKED
+          - 424 FAILED_DEPENDENCY
+          - 425 TOO_EARLY
+          - 426 UPGRADE_REQUIRED
+          - 428 PRECONDITION_REQUIRED
+          - 429 TOO_MANY_REQUESTS
+          - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
+          - 451 UNAVAILABLE_FOR_LEGAL_REASONS
+          - 500 INTERNAL_SERVER_ERROR
+          - 501 NOT_IMPLEMENTED
+          - 502 BAD_GATEWAY
+          - 503 SERVICE_UNAVAILABLE
+          - 504 GATEWAY_TIMEOUT
+          - 505 HTTP_VERSION_NOT_SUPPORTED
+          - 506 VARIANT_ALSO_NEGOTIATES
+          - 507 INSUFFICIENT_STORAGE
+          - 508 LOOP_DETECTED
+          - 509 BANDWIDTH_LIMIT_EXCEEDED
+          - 510 NOT_EXTENDED
+          - 511 NETWORK_AUTHENTICATION_REQUIRED
+        reason:
+          type: string
+        message:
+          type: string
+        developerMessage:
+          type: string
+        response:
+          $ref: "#/components/schemas/WelcomeDto"
     WelcomeDto:
       type: object
       properties:

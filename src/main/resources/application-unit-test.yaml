@@ -20,10 +20,13 @@ spring:
   cloud:
     config:
       enabled: false
-  profiles:
-    active: unit-test
+  jmx:
+    enabled: false
 eureka:
   client:
     enabled: false
     register-with-eureka: false
     fetch-registry: false
+management:
+  server:
+    port: 9002
