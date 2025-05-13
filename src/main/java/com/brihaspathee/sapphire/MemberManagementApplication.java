@@ -19,10 +19,10 @@ public class MemberManagementApplication {
 		SpringApplication.run(MemberManagementApplication.class, args);
 	}
 
-	@PostConstruct
-	public void logConfig() {
-		System.out.println("Active profile: " + environment.getActiveProfiles()[0]);
-		System.out.println("Application properties loaded from: " + environment.getProperty("spring.config.location"));
-	}
+//	@PostConstruct
+//	public void logConfig() {
+//		System.out.println("Active profile: " + environment.getActiveProfiles()[0]);
+//		System.out.println("Application properties loaded from: " + environment.getProperty("spring.config.location"));
+//	}
 
 }
